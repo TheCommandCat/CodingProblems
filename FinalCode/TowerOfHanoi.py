@@ -45,7 +45,7 @@ def towerOfHanoiSolution(fromRod, toRod, middleRod, numOfDisks=None, rods=None):
         return "done"
     towerOfHanoiSolution(fromRod, middleRod, toRod, numOfDisks - 1, rods)
     print("Move disk", numOfDisks, "from rod", fromRod, "to rod", toRod)
-    moveDisk(rods, diskNum=numOfDisks, fromRod, toRod)
+    moveDisk(rods, diskNum=numOfDisks, fromRod=fromRod, toRod=toRod)
     towerOfHanoiSolution(middleRod, toRod, fromRod, numOfDisks - 1, rods)
 
 

@@ -1,4 +1,5 @@
 import numpy as np
+from diagnols import findDiagnols
 
 b = np.zeros((8, 8), dtype=int)
 
@@ -9,58 +10,30 @@ def ctc(code):
     num = [i for i in code][1]
     listLettersToNumbers = {"A": 1, "B": 2, "C": 3, "D": 4, "E": 5, "F": 6, "G": 7, "H": 8}
     letter = listLettersToNumbers[letter]
-    return int(letter) - 1, 7 - (int(num) - 1)
+    return 7 - (int(num) - 1), int(letter) - 1 
 
 def placeq(code):
-    letter, num = ctc(code)
+    num, letter = ctc(code)
     b[num, letter] = 1
 
-def diagnols(code):
-    letter, num = ctc(code)
-    diagnolslist= []
-    for i in range(1, 4):
-        match i:
-            case 1:
-                for j in range(1,8):
-                    if num+j != 9 and letter+j != 9 and num+j != -1 and letter+j != -1:
-                        diagnolslist.append([num+j, letter + j])
-                    else:
-                        break
-            case 2:
-                for j in range(1,8):
-                    if num+j != 9 and letter-j != 9 and num+j != -1 and letter-j != -1:
-                        diagnolslist.append([num+j, letter - j])
-                    else:
-                        break
-            case 3:
-                for j in range(1,8):
-                    if num-j != 9 and letter-j != 9 and num-j != -1 and letter-j != -1:
-                        diagnolslist.append([num-j, letter - j])
-                    else:
-                        break
-            case 4:
-                for j in range(1,8):
-                    if num-j != 9 and letter+j != 9 and num-j != -1 and letter+j != -1:
-                        diagnolslist.append([num-j, letter + j])
-                    else:
-                        break
-    return (diagnolslist)
-
-
 def checkvalid(code, visualize=False):
-    letter, num = ctc(code)
+    num, letter = ctc(code)
     print("cords:", letter, num)
-    valid = (np.count_nonzero(b[letter] == 1) <= 1) and (np.count_nonzero(b[:, letter] == 1) <= 1)
-    diagnoals = []
-
-    diagnoals.append((num+1, letter+1))
+    print(np.count_nonzero(b[num] == 1), np.count_nonzero(b[:, letter] == 1))
+    valid = (np.count_nonzero(b[num] == 1) <= 1) and (np.count_nonzero(b[:, letter] == 1) <= 1)
+    diaglist = findDiagnols(num, letter)
+    for i in diaglist:
+        if b[i[0], i[1]] == 1:
+            valid = False
+            break
     print("valid:", valid)
     if visualize:
-        b[num] = 2
-        b[:,letter] = 2
+        b[num] = 10
+        b[:,letter] = 10
+        for i in diaglist:
+            b[i[0], i[1]] = 10
         placeq(code)
 
-placeq("B3")
-dlist = diagnols("B3")
-checkvalid("B3", visualize=True)
-print(b)
+# all machanics are finished
+# write here the algorithm ↓
+

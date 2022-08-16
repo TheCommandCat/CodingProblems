@@ -1,5 +1,4 @@
 def findDiagnols(num, letter):
-    print("cords:", num, letter)
     diagnolslist= []
     for i in range(1, 5):
         match i:

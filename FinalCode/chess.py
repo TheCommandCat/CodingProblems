@@ -12,14 +12,14 @@ def ctc(code):
     letter = listLettersToNumbers[letter]
     return 7 - (int(num) - 1), int(letter) - 1 
 
-def placeq(code):
-    num, letter = ctc(code)
+def placeq(num, letter):
+    # num, letter = ctc(code)
     b[num, letter] = 1
 
-def checkvalid(code, visualize=False):
-    num, letter = ctc(code)
+def checkvalid(num, letter, visualize=False):
+    b[num, letter] = 1
+    # num, letter = ctc(code)
     print("cords:", letter, num)
-    print(np.count_nonzero(b[num] == 1), np.count_nonzero(b[:, letter] == 1))
     valid = (np.count_nonzero(b[num] == 1) <= 1) and (np.count_nonzero(b[:, letter] == 1) <= 1)
     diaglist = findDiagnols(num, letter)
     for i in diaglist:
@@ -28,12 +28,23 @@ def checkvalid(code, visualize=False):
             break
     print("valid:", valid)
     if visualize:
-        b[num] = 10
-        b[:,letter] = 10
+        b[num] = 2
+        b[:,letter] = 2
         for i in diaglist:
-            b[i[0], i[1]] = 10
-        placeq(code)
+            b[i[0], i[1]] = 2
+        placeq(num, letter)
+    if not valid:
+        b[num, letter] = 0
+    return valid
+numOfQueens = 0
 
 # all machanics are finished
 # write here the algorithm ↓
 
+for x in range(8):
+    for y in range(8):
+        if checkvalid(x, y):
+            placeq(x, y)
+            numOfQueens += 1
+print(b)
+print("numOfQueens:", numOfQueens)

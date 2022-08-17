@@ -1,50 +1,64 @@
+
+from operator import le
 import numpy as np
-from diagnols import findDiagnols
+from diagnols import isDiagnolsValid
 
-b = np.zeros((8, 8), dtype=int)
 
-# code to cords example: B4 = (2, 4)
+
+# all "chess code" old code
 
 def ctc(code):
     letter = [i for i in code][0]
     num = [i for i in code][1]
-    listLettersToNumbers = {"A": 1, "B": 2, "C": 3, "D": 4, "E": 5, "F": 6, "G": 7, "H": 8}
-    letter = listLettersToNumbers[letter]
-    return 7 - (int(num) - 1), int(letter) - 1 
+    listLettersToNumbers = {"A": 0, "B": 1, "C": 2, "D": 3, "E": 4, "F": 5, "G": 6, "H": 7}
+    letter = int(listLettersToNumbers[letter])
+    # origanli it is return 7 - (int(num) - 1)
+    return 8 - num, letter
 
-def placeq(num, letter):
-    # num, letter = ctc(code)
-    b[num, letter] = 1
+# nicer way to write b[num, letter] = 1
 
-def checkvalid(num, letter, visualize=False):
-    b[num, letter] = 1
-    # num, letter = ctc(code)
-    print("cords:", letter, num)
-    valid = (np.count_nonzero(b[num] == 1) <= 1) and (np.count_nonzero(b[:, letter] == 1) <= 1)
-    diaglist = findDiagnols(num, letter)
-    for i in diaglist:
-        if b[i[0], i[1]] == 1:
-            valid = False
-            break
-    print("valid:", valid)
-    if visualize:
-        b[num] = 2
-        b[:,letter] = 2
+def placeq(num, letter, numToplace):
+    b[num, letter] = numToplace
+
+def checkvalid(num, letter, b, visualize=False):
+    placeq(num, letter , 1)
+    validRowsAndColumns = (np.count_nonzero(b[num] == 1) <= 1) and (np.count_nonzero(b[:, letter] == 1) <= 1)
+    validDiagnols = isDiagnolsValid(b, num, letter)
+    valid = validRowsAndColumns and validDiagnols
+    if valid:
+        print("valid:", valid)
+    if visualize and valid: # works only at first time, debug use only
+
+        for i in range(8):
+            print(num, letter, i)
+            if b[num, i] != 1:
+                placeq(num, i, 2)
+        for i in range(8):
+                if b[i, letter] != 1:
+                    placeq(i, letter, 2)
+
+        diaglist = isDiagnolsValid(b, num, letter, returnList=True)
         for i in diaglist:
-            b[i[0], i[1]] = 2
-        placeq(num, letter)
+            if b[i[0], i[1]] != 1:
+                b[i[0], i[1]] = 2
     if not valid:
         b[num, letter] = 0
     return valid
+
 numOfQueens = 0
 
 # all machanics are finished
 # write here the algorithm ↓
 
-for x in range(8):
-    for y in range(8):
-        if checkvalid(x, y):
-            placeq(x, y)
-            numOfQueens += 1
+
+b = np.zeros((8, 8), dtype=int)
+for i in range(8):
+    for j in range(8):
+        if checkvalid(i, j, b, visualize = True):
+            placeq(i,j, 1)
+    
+
+
+
+
 print(b)
-print("numOfQueens:", numOfQueens)

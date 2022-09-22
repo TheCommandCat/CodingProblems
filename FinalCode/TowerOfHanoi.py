@@ -1,7 +1,7 @@
 
 # visualize the solution
 
-def printTowerOfHanoi(rods):
+def visTowerOfHanoi(rods):
     height = sum(map(len, rods))
     for r in reversed(range(height)):
         for peg in rods:
@@ -16,7 +16,7 @@ def printTowerOfHanoi(rods):
 def moveDisk(rods, diskNum, fromRod, toRod):
     rods[toRod].append(diskNum)
     rods[fromRod].pop()
-    printTowerOfHanoi(rods)
+    visTowerOfHanoi(rods)
     print()
     print(rods)
 
@@ -38,7 +38,7 @@ def towerOfHanoiSolution(fromRod, toRod, middleRod, numOfDisks=None, rods=None):
         # make the rods variable according to the order of the rods
         numOfDisks = inputNumOfDisks
         rods = makeRods(fromRod, numOfDisks, 3)
-        printTowerOfHanoi(rods)
+        visTowerOfHanoi(rods)
     if numOfDisks == 1:
         print("Move disk 1 from rod", fromRod, "to rod", toRod)
         moveDisk(rods, 1, fromRod, toRod)

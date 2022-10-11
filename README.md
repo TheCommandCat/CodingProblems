@@ -1,2 +1,2 @@
-# ProjectEuler
-trying to solve project euler problems
+# CodingProblems
+trying to solve coding problems

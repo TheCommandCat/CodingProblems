@@ -13,9 +13,7 @@ def solve(s):
     # print("subArrs: ", subArrs)
     lastObject = [s[-1]]
     # print("lastObject: ", lastObject)
-    output = subArrs + [lastObject + i for i in subArrs]
-
-    return output
+    return subArrs + [lastObject + i for i in subArrs]
 
 
 # print(s[:-1]) # delete last object
@@ -23,4 +21,4 @@ def solve(s):
 # print(s[-1]) # only last object as int
 
 
-print(solve([1,5,9]))
+print(solve(s))

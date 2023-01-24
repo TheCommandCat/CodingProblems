@@ -2,16 +2,17 @@
 # solve func takes a num and return a list of all ways to represent the num as a sum of natural nums
 def solve(n):
     
-    # 5
-    # 1 2 3 4
-    
+    # s stands for set object
+    if len(n) <= 0:
+        return []
+    if len(n) == 1:
+        return [[1]]
 
-    for i in range(n-1):
-        x = solve(n-i)
-        for j in x:
-            y = [i].append(x)
+    subArrs = solve(n-1)   
+    # print("subArrs: ", subArrs)
+    lastObject = n[:-1]
+    # print("lastObject: ", lastObject)
+    output = subArrs + [lastObject + i for i in subArrs]
+    return output
 
-
-    return y
-print([2,3].extand([4,3]))
-print((1,2) + (3,4,5))
+print(solve([5]))
